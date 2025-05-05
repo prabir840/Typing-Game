@@ -1,0 +1,2023 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Speed Typer Pro</title>
+    <style>
+      /* Base styles */
+      :root {
+        --primary: #8b5cf6;
+        --primary-dark: #7c3aed;
+        --secondary: #e0e7ff;
+        --accent: #4f46e5;
+        --background: #f8fafc;
+        --foreground: #1e293b;
+        --border: #e2e8f0;
+        --success: #22c55e;
+        --error: #ef4444;
+        --warning: #f59e0b;
+        --card: #ffffff;
+        --card-foreground: #1e293b;
+        --muted: #94a3b8;
+      }
+
+      .dark {
+        --primary: #a78bfa;
+        --primary-dark: #8b5cf6;
+        --secondary: #312e81;
+        --accent: #818cf8;
+        --background: #0f172a;
+        --foreground: #f8fafc;
+        --border: #1e293b;
+        --success: #22c55e;
+        --error: #ef4444;
+        --warning: #f59e0b;
+        --card: #1e293b;
+        --card-foreground: #f8fafc;
+        --muted: #64748b;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+
+      body {
+        background: linear-gradient(to bottom, #f0f4ff, #e0e7ff);
+        min-height: 100vh;
+        color: var(--foreground);
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      body.dark {
+        background: linear-gradient(to bottom, #0f172a, #1e293b);
+      }
+
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 2rem;
+      }
+
+      /* Header styles */
+      header {
+        text-align: center;
+        margin-bottom: 1.5rem;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        font-weight: 800;
+        background: linear-gradient(to right, #8b5cf6, #6366f1);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        color: var(--muted);
+        font-size: 1.125rem;
+      }
+
+      /* Card styles */
+      .card {
+        background-color: var(--card);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+          0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        border: 2px solid var(--border);
+      }
+
+      .card-header {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--card-foreground);
+      }
+
+      .card-description {
+        color: var(--muted);
+        font-size: 0.875rem;
+        margin-top: 0.25rem;
+      }
+
+      .card-content {
+        padding: 1.5rem;
+      }
+
+      .card-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+      }
+
+      /* Tab styles */
+      .tabs {
+        margin-bottom: 1.5rem;
+      }
+
+      .tabs-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .tabs-list {
+        display: flex;
+        background-color: var(--secondary);
+        border-radius: 0.5rem;
+        padding: 0.25rem;
+      }
+
+      .tab-trigger {
+        padding: 0.5rem 1rem;
+        border-radius: 0.375rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .tab-trigger:hover:not([disabled]) {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      .tab-trigger[aria-selected="true"] {
+        background-color: var(--card);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .tab-trigger[disabled] {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .tab-content {
+        display: none;
+      }
+
+      .tab-content[data-state="active"] {
+        display: block;
+      }
+
+      /* Badge styles */
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        padding: 0.25rem 0.75rem;
+        line-height: 1;
+        border: 1px solid var(--border);
+        color: var(--muted);
+      }
+
+      .high-score {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+        font-weight: 600;
+      }
+
+      .icon {
+        display: inline-flex;
+        vertical-align: middle;
+      }
+
+      /* Progress bar styles */
+      .progress {
+        position: relative;
+        height: 0.5rem;
+        width: 100%;
+        overflow: hidden;
+        border-radius: 9999px;
+        background-color: var(--secondary);
+      }
+
+      .progress-indicator {
+        height: 100%;
+        border-radius: 9999px;
+        transition: width 0.1s ease, background-color 0.2s ease;
+      }
+
+      .green {
+        background-color: var(--success);
+      }
+
+      .orange {
+        background-color: var(--warning);
+      }
+
+      .red {
+        background-color: var(--error);
+      }
+
+      /* Word display and input styles */
+      .word-display {
+        text-align: center;
+        font-size: 2rem;
+        font-family: monospace;
+        padding: 1rem 0;
+        min-height: 4rem;
+        line-height: 1.5;
+      }
+
+      .character {
+        display: inline-block;
+      }
+
+      .character-correct {
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      .character-incorrect {
+        color: var(--error);
+        font-weight: 700;
+      }
+
+      .input-container {
+        position: relative;
+        margin-top: 1rem;
+      }
+
+      .word-input {
+        width: 100%;
+        padding: 0.75rem 1rem;
+        text-align: center;
+        font-size: 1.125rem;
+        border: 2px solid var(--border);
+        border-radius: 0.5rem;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        background-color: var(--card);
+        color: var(--card-foreground);
+      }
+
+      .word-input:focus {
+        outline: none;
+        border-color: var(--primary);
+        box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+      }
+
+      .combo-badge {
+        position: absolute;
+        top: -1.5rem;
+        right: 0;
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .combo-text {
+        color: var(--warning);
+        font-weight: 700;
+      }
+
+      .combo-count {
+        background-color: rgba(245, 158, 11, 0.1);
+        color: var(--warning);
+        padding: 0.25rem 0.5rem;
+        border-radius: 0.375rem;
+        font-weight: 700;
+      }
+
+      /* Stats panel styles */
+      .stats-panel {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+        margin-top: 1.5rem;
+      }
+
+      @media (min-width: 640px) {
+        .stats-panel {
+          grid-template-columns: repeat(4, 1fr);
+        }
+      }
+
+      .stat-card {
+        padding: 0.75rem;
+        border-radius: 0.5rem;
+        text-align: center;
+      }
+
+      .stat-label {
+        font-size: 0.875rem;
+        color: var(--muted);
+        margin-bottom: 0.25rem;
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .stat-score {
+        background-color: rgba(139, 92, 246, 0.1);
+      }
+
+      .stat-score .stat-value {
+        color: #9333ea;
+      }
+
+      .stat-wpm {
+        background-color: rgba(59, 130, 246, 0.1);
+      }
+
+      .stat-wpm .stat-value {
+        color: #2563eb;
+      }
+
+      .stat-accuracy {
+        background-color: rgba(34, 197, 94, 0.1);
+      }
+
+      .stat-accuracy .stat-value {
+        color: #16a34a;
+      }
+
+      .stat-words {
+        background-color: rgba(99, 102, 241, 0.1);
+      }
+
+      .stat-words .stat-value {
+        color: #4f46e5;
+      }
+
+      /* Game over styles */
+      .game-over {
+        text-align: center;
+        padding: 1.5rem;
+      }
+
+      .game-over h3 {
+        font-size: 1.875rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+      }
+
+      .results-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        margin-bottom: 1.5rem;
+      }
+
+      @media (min-width: 640px) {
+        .results-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+
+      .results-card {
+        background: linear-gradient(
+          to bottom right,
+          rgba(139, 92, 246, 0.1),
+          rgba(99, 102, 241, 0.1)
+        );
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+      }
+
+      .results-card h4 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+
+      .results-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.75rem;
+      }
+
+      .results-label {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .results-value {
+        font-weight: 700;
+        font-size: 1.25rem;
+      }
+
+      .achievements-card {
+        background: linear-gradient(
+          to bottom right,
+          rgba(99, 102, 241, 0.1),
+          rgba(139, 92, 246, 0.1)
+        );
+        padding: 1.5rem;
+        border-radius: 0.75rem;
+      }
+
+      .new-high-score {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+        background-color: rgba(245, 158, 11, 0.2);
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        color: var(--warning);
+      }
+
+      /* Button styles */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border: none;
+      }
+
+      .btn-primary {
+        background: linear-gradient(to right, var(--primary), var(--accent));
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(to right, #7c3aed, #4338ca);
+        transform: translateY(-1px);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 2px solid var(--error);
+        color: var(--error);
+      }
+
+      .btn-outline:hover {
+        background-color: rgba(239, 68, 68, 0.1);
+      }
+
+      .btn-secondary {
+        background-color: var(--secondary);
+        color: var(--foreground);
+        border: 1px solid var(--border);
+      }
+
+      .btn-secondary:hover {
+        background-color: var(--border);
+      }
+
+      .btn-lg {
+        padding: 1rem 2rem;
+        font-size: 1.125rem;
+      }
+
+      /* Footer styles */
+      .footer {
+        margin-top: 2rem;
+        text-align: center;
+      }
+
+      .footer p {
+        color: var(--muted);
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+      }
+
+      /* Intro screen styles */
+      .intro-screen {
+        text-align: center;
+        padding: 2.5rem;
+      }
+
+      .intro-icon {
+        color: var(--primary);
+        font-size: 4rem;
+        margin-bottom: 1rem;
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.5;
+        }
+      }
+
+      /* Toast notification styles */
+      #toast-container {
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 9999;
+      }
+
+      .toast {
+        padding: 0.75rem 1rem;
+        border-radius: 0.5rem;
+        margin-bottom: 0.5rem;
+        color: white;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 300px;
+        animation: slideIn 0.3s ease-out forwards;
+      }
+
+      .toast-success {
+        background-color: var(--success);
+      }
+
+      .toast-error {
+        background-color: var(--error);
+      }
+
+      .toast-info {
+        background-color: var(--accent);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
+      }
+
+      @keyframes slideOut {
+        from {
+          transform: translateX(0);
+          opacity: 1;
+        }
+        to {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+      }
+
+      /* Dark mode toggle */
+      .theme-toggle {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background-color: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--foreground);
+        z-index: 10;
+      }
+
+      /* Home button styles */
+      .home-button {
+        position: absolute;
+        top: 1rem;
+        left: 1rem;
+        background-color: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--foreground);
+        z-index: 10;
+        transition: all 0.2s ease;
+      }
+
+      .home-button:hover {
+        background-color: var(--border);
+        transform: scale(1.05);
+      }
+
+      /* Pause overlay styles */
+      .pause-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 100;
+        color: white;
+        display: none;
+      }
+
+      .pause-overlay h2 {
+        font-size: 2.5rem;
+        margin-bottom: 2rem;
+      }
+
+      /* Sound controls */
+      .sound-control {
+        position: absolute;
+        top: 1rem;
+        right: 4rem;
+        background-color: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 9999px;
+        padding: 0.5rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: var(--foreground);
+        z-index: 10;
+      }
+
+      /* Animations */
+      @keyframes bounce {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-10px);
+        }
+      }
+
+      .bounce {
+        animation: bounce 0.5s ease;
+      }
+
+      .typing-container {
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Home button -->
+    <div class="home-button" id="home-button" title="Go Home">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+        <polyline points="9 22 9 12 15 12 15 22"></polyline>
+      </svg>
+    </div>
+
+    <!-- Theme toggle -->
+    <div class="theme-toggle" id="theme-toggle">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        id="theme-icon"
+      >
+        <circle cx="12" cy="12" r="5"></circle>
+        <line x1="12" y1="1" x2="12" y2="3"></line>
+        <line x1="12" y1="21" x2="12" y2="23"></line>
+        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+        <line x1="1" y1="12" x2="3" y2="12"></line>
+        <line x1="21" y1="12" x2="23" y2="12"></line>
+        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+      </svg>
+    </div>
+
+    <!-- Sound control -->
+    <div class="sound-control" id="sound-control" title="Toggle Sound">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+        <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+        <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+      </svg>
+    </div>
+
+    <div class="container">
+      <header>
+        <h1>Speed Typer Pro</h1>
+        <p class="subtitle">Test and improve your typing speed and accuracy</p>
+      </header>
+
+      <div class="tabs">
+        <div class="tabs-header">
+          <div class="tabs-list" role="tablist">
+            <button
+              class="tab-trigger"
+              role="tab"
+              aria-selected="true"
+              id="tab-easy"
+              data-tab="easy"
+            >
+              Easy
+            </button>
+            <button
+              class="tab-trigger"
+              role="tab"
+              aria-selected="false"
+              id="tab-medium"
+              data-tab="medium"
+            >
+              Medium
+            </button>
+            <button
+              class="tab-trigger"
+              role="tab"
+              aria-selected="false"
+              id="tab-hard"
+              data-tab="hard"
+            >
+              Hard
+            </button>
+          </div>
+
+          <div class="high-score">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#f59e0b"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon"
+            >
+              <path d="M8 21h8"></path>
+              <path d="M12 21v-4"></path>
+              <path d="M12 3v4"></path>
+              <path d="M15.5 7.5l2-2"></path>
+              <path d="M8.5 7.5l-2-2"></path>
+              <path d="M20.5 12l-3-1"></path>
+              <path d="M3.5 12l3-1"></path>
+              <path
+                d="m13.25 14.2-.835-.836a2 2 0 0 0-2.817 0l-.834.835a2 2 0 0 0 0 2.816l.834.836a2 2 0 0 0 2.817 0l.835-.836a2 2 0 0 0 0-2.816Z"
+              ></path>
+              <path
+                d="m13.47 9.4-.834-.835a2 2 0 0 1 0-2.817l.835-.835a2 2 0 0 1 2.816 0l.834.835a2 2 0 0 1 0 2.817l-.835.834a2 2 0 0 1-2.816 0Z"
+              ></path>
+              <path
+                d="m8.19 14.025.835-.834a2 2 0 0 0 0-2.817l-.835-.835a2 2 0 0 0-2.816 0l-.835.835a2 2 0 0 0 0 2.816l.835.835a2 2 0 0 0 2.816 0Z"
+              ></path>
+            </svg>
+            <span>High Score: <span id="high-score">0</span></span>
+          </div>
+        </div>
+
+        <div class="tab-content" data-state="active" data-tab="easy">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Easy Mode</h3>
+                <p class="card-description">
+                  Short, simple words with plenty of time.
+                </p>
+              </div>
+              <span class="badge">3-4 Letter Words</span>
+            </div>
+            <div class="card-content" id="easy-intro">
+              <p class="text-center text-sm text-muted">
+                Press Start to begin!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" data-tab="medium">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Medium Mode</h3>
+                <p class="card-description">
+                  Medium length words with reasonable timing.
+                </p>
+              </div>
+              <span class="badge">5-8 Letter Words</span>
+            </div>
+            <div class="card-content" id="medium-intro">
+              <p class="text-center text-sm text-muted">
+                Press Start to begin!
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" data-tab="hard">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">Hard Mode</h3>
+                <p class="card-description">
+                  Complex, longer words that will test your typing skills.
+                </p>
+              </div>
+              <span class="badge">9+ Letter Words</span>
+            </div>
+            <div class="card-content" id="hard-intro">
+              <p class="text-center text-sm text-muted">
+                Press Start to begin!
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Game Area -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Typing Area</h3>
+          <div id="timer-container" style="display: none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#f59e0b"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon"
+            >
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <span id="time-left">5.0s</span>
+          </div>
+        </div>
+
+        <div class="card-content" id="game-content">
+          <div id="game-area" style="display: none" class="typing-container">
+            <div class="mb-6">
+              <div class="progress">
+                <div
+                  id="progress-bar"
+                  class="progress-indicator green"
+                  style="width: 100%"
+                ></div>
+              </div>
+
+              <div class="word-display" id="current-word"></div>
+
+              <div class="input-container">
+                <input
+                  type="text"
+                  id="word-input"
+                  class="word-input"
+                  placeholder="Type the word here..."
+                  autocomplete="off"
+                />
+
+                <div
+                  id="combo-display"
+                  class="combo-badge"
+                  style="display: none"
+                >
+                  <span class="combo-text">Combo</span>
+                  <span id="combo-count" class="combo-count">x2</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stats Panel -->
+            <div class="stats-panel">
+              <div class="stat-card stat-score">
+                <p class="stat-label">Score</p>
+                <p id="score" class="stat-value">0</p>
+              </div>
+
+              <div class="stat-card stat-wpm">
+                <p class="stat-label">WPM</p>
+                <p id="wpm" class="stat-value">0</p>
+              </div>
+
+              <div class="stat-card stat-accuracy">
+                <p class="stat-label">Accuracy</p>
+                <p id="accuracy" class="stat-value">100%</p>
+              </div>
+
+              <div class="stat-card stat-words">
+                <p class="stat-label">Words</p>
+                <p id="words-count" class="stat-value">0/0</p>
+              </div>
+            </div>
+
+            <!-- Pause overlay -->
+            <div id="pause-overlay" class="pause-overlay">
+              <h2>Game Paused</h2>
+              <button id="resume-button" class="btn btn-primary btn-lg">
+                Resume Game
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          <div id="game-over" class="game-over" style="display: none">
+            <h3>Game Over!</h3>
+            <div class="results-grid">
+              <div class="results-card">
+                <h4>Your Results</h4>
+                <div class="results-item">
+                  <div class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#f59e0b"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <path d="M8 21h8"></path>
+                      <path d="M12 21v-4"></path>
+                      <path d="M12 3v4"></path>
+                      <path d="M15.5 7.5l2-2"></path>
+                      <path d="M8.5 7.5l-2-2"></path>
+                      <path d="M20.5 12l-3-1"></path>
+                      <path d="M3.5 12l3-1"></path>
+                      <path
+                        d="m13.25 14.2-.835-.836a2 2 0 0 0-2.817 0l-.834.835a2 2 0 0 0 0 2.816l.834.836a2 2 0 0 0 2.817 0l.835-.836a2 2 0 0 0 0-2.816Z"
+                      ></path>
+                      <path
+                        d="m13.47 9.4-.834-.835a2 2 0 0 1 0-2.817l.835-.835a2 2 0 0 1 2.816 0l.834.835a2 2 0 0 1 0 2.817l-.835.834a2 2 0 0 1-2.816 0Z"
+                      ></path>
+                      <path
+                        d="m8.19 14.025.835-.834a2 2 0 0 0 0-2.817l-.835-.835a2 2 0 0 0-2.816 0l-.835.835a2 2 0 0 0 0 2.816l.835.835a2 2 0 0 0 2.816 0Z"
+                      ></path>
+                    </svg>
+                    Final Score
+                  </div>
+                  <span id="final-score" class="results-value">0</span>
+                </div>
+                <div class="results-item">
+                  <div class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#3b82f6"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                    </svg>
+                    Words Per Minute
+                  </div>
+                  <span id="final-wpm" class="results-value">0</span>
+                </div>
+                <div class="results-item">
+                  <div class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#22c55e"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <path
+                        d="M13 19h6a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2"
+                      ></path>
+                      <path d="M13 22v-3"></path>
+                      <path
+                        d="M6 19h3a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v12c0 1 .6 3 3 3Z"
+                      ></path>
+                    </svg>
+                    Accuracy
+                  </div>
+                  <span id="final-accuracy" class="results-value">0%</span>
+                </div>
+              </div>
+
+              <div class="achievements-card">
+                <h4>Achievements</h4>
+                <div class="results-item">
+                  <div class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#9333ea"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <rect
+                        x="3"
+                        y="8"
+                        width="18"
+                        height="12"
+                        rx="2"
+                        ry="2"
+                      ></rect>
+                      <path d="M7 8v0a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v0"></path>
+                    </svg>
+                    Max Combo
+                  </div>
+                  <span id="max-combo" class="results-value">0x</span>
+                </div>
+                <div class="results-item">
+                  <div class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="#8b5cf6"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <circle cx="12" cy="8" r="7"></circle>
+                      <path d="M8.21 13.89 7 23l5-3 5 3-1.21-9.12"></path>
+                    </svg>
+                    Words Completed
+                  </div>
+                  <span id="correct-words" class="results-value">0</span>
+                </div>
+                <div
+                  id="new-high-score"
+                  class="new-high-score"
+                  style="display: none"
+                >
+                  <span class="results-label">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="icon"
+                    >
+                      <path d="M8 21h8"></path>
+                      <path d="M12 21v-4"></path>
+                      <path d="M12 3v4"></path>
+                      <path d="M15.5 7.5l2-2"></path>
+                      <path d="M8.5 7.5l-2-2"></path>
+                      <path d="M20.5 12l-3-1"></path>
+                      <path d="M3.5 12l3-1"></path>
+                      <path
+                        d="m13.25 14.2-.835-.836a2 2 0 0 0-2.817 0l-.834.835a2 2 0 0 0 0 2.816l.834.836a2 2 0 0 0 2.817 0l.835-.836a2 2 0 0 0 0-2.816Z"
+                      ></path>
+                      <path
+                        d="m13.47 9.4-.834-.835a2 2 0 0 1 0-2.817l.835-.835a2 2 0 0 1 2.816 0l.834.835a2 2 0 0 1 0 2.817l-.835.834a2 2 0 0 1-2.816 0Z"
+                      ></path>
+                      <path
+                        d="m8.19 14.025.835-.834a2 2 0 0 0 0-2.817l-.835-.835a2 2 0 0 0-2.816 0l-.835.835a2 2 0 0 0 0 2.816l.835.835a2 2 0 0 0 2.816 0Z"
+                      ></path>
+                    </svg>
+                    New High Score!
+                  </span>
+                  <span id="new-high-score-value" class="results-value">0</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="intro-screen" class="intro-screen">
+            <div class="intro-icon">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="64"
+                height="64"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M15 10l-3 3-3-3"></path>
+              </svg>
+            </div>
+            <p class="text-xl mb-4">Ready to test your typing speed?</p>
+            <p class="text-muted mb-6">
+              Type the words as they appear as quickly and accurately as
+              possible.
+            </p>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button id="start-button" class="btn btn-primary btn-lg">
+            Start Game
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg>
+          </button>
+
+          <button
+            id="pause-button"
+            class="btn btn-secondary btn-lg"
+            style="display: none"
+          >
+            Pause Game
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="6" y="4" width="4" height="16"></rect>
+              <rect x="14" y="4" width="4" height="16"></rect>
+            </svg>
+          </button>
+
+          <button
+            id="end-button"
+            class="btn btn-outline btn-lg"
+            style="display: none"
+          >
+            End Game
+          </button>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>Practice regularly to improve your typing speed and accuracy!</p>
+        <p>
+          <span class="font-medium">Easy:</span> 3-4 letter words |
+          <span class="font-medium">Medium:</span> 5-8 letter words |
+          <span class="font-medium">Hard:</span> 9+ letter words
+        </p>
+      </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <!-- Audio elements -->
+    <audio
+      id="correct-sound"
+      src="correct.wav"
+      preload="auto"
+    ></audio>
+    <audio
+      id="wrong-sound"
+      src="wrong.wav"
+      preload="auto"
+    ></audio>
+    <audio id="game-over-sound" src="gameover-86548.mp3" preload="auto"></audio>
+    <audio
+      id="combo-sound"
+      src="combo-sound.mp3"
+      preload="auto"
+    ></audio>
+    <audio
+      id="click-sound"
+      src="click.mp3"
+      preload="auto"
+    ></audio>
+
+    <script>
+      // Game configuration
+      const difficultySettings = {
+        easy: {
+          words: [
+            "sun",
+            "dog",
+            "cat",
+            "run",
+            "play",
+            "fun",
+            "day",
+            "cool",
+            "nice",
+            "happy",
+            "book",
+            "walk",
+            "talk",
+            "sing",
+            "jump",
+            "love",
+            "kind",
+            "help",
+            "hope",
+            "life",
+            "good",
+            "time",
+            "year",
+            "hand",
+            "work",
+            "home",
+            "food",
+            "water",
+            "light",
+            "dark",
+          ],
+          timePerWord: 5,
+          label: "Easy",
+        },
+        medium: {
+          words: [
+            "garden",
+            "picture",
+            "kitchen",
+            "window",
+            "travel",
+            "yellow",
+            "number",
+            "program",
+            "amazing",
+            "important",
+            "building",
+            "computer",
+            "keyboard",
+            "freedom",
+            "mountain",
+            "creative",
+            "language",
+            "happiness",
+            "learning",
+            "example",
+            "question",
+            "awesome",
+            "beautiful",
+            "consider",
+            "different",
+            "exercise",
+            "favorite",
+            "together",
+            "vacation",
+            "solution",
+          ],
+          timePerWord: 7,
+          label: "Medium",
+        },
+        hard: {
+          words: [
+            "accomplishment",
+            "sophisticated",
+            "determination",
+            "responsibility",
+            "concentration",
+            "extraordinary",
+            "appreciation",
+            "collaboration",
+            "enthusiastic",
+            "fascinating",
+            "revolutionary",
+            "philosophical",
+            "development",
+            "opportunity",
+            "intelligence",
+            "organization",
+            "comfortable",
+            "understand",
+            "personality",
+            "experience",
+            "technology",
+            "environment",
+            "information",
+            "mathematics",
+            "programming",
+            "inspiration",
+            "vocabulary",
+            "absolutely",
+            "immediately",
+            "consideration",
+          ],
+          timePerWord: 10,
+          label: "Hard",
+        },
+      };
+
+      // DOM elements
+      const tabTriggers = document.querySelectorAll(".tab-trigger");
+      const tabContents = document.querySelectorAll(".tab-content");
+      const startButton = document.getElementById("start-button");
+      const endButton = document.getElementById("end-button");
+      const pauseButton = document.getElementById("pause-button");
+      const resumeButton = document.getElementById("resume-button");
+      const currentWordElement = document.getElementById("current-word");
+      const wordInput = document.getElementById("word-input");
+      const gameArea = document.getElementById("game-area");
+      const gameOver = document.getElementById("game-over");
+      const introScreen = document.getElementById("intro-screen");
+      const timerContainer = document.getElementById("timer-container");
+      const timeLeftElement = document.getElementById("time-left");
+      const progressBar = document.getElementById("progress-bar");
+      const scoreElement = document.getElementById("score");
+      const wpmElement = document.getElementById("wpm");
+      const accuracyElement = document.getElementById("accuracy");
+      const wordsCountElement = document.getElementById("words-count");
+      const comboDisplay = document.getElementById("combo-display");
+      const comboCount = document.getElementById("combo-count");
+      const highScoreElement = document.getElementById("high-score");
+      const finalScoreElement = document.getElementById("final-score");
+      const finalWpmElement = document.getElementById("final-wpm");
+      const finalAccuracyElement = document.getElementById("final-accuracy");
+      const maxComboElement = document.getElementById("max-combo");
+      const correctWordsElement = document.getElementById("correct-words");
+      const newHighScoreElement = document.getElementById("new-high-score");
+      const newHighScoreValueElement = document.getElementById(
+        "new-high-score-value"
+      );
+      const themeToggle = document.getElementById("theme-toggle");
+      const themeIcon = document.getElementById("theme-icon");
+      const pauseOverlay = document.getElementById("pause-overlay");
+      const homeButton = document.getElementById("home-button");
+      const soundControl = document.getElementById("sound-control");
+
+      // Audio elements
+      const correctSound = document.getElementById("correct-sound");
+      const wrongSound = document.getElementById("wrong-sound");
+      const gameOverSound = document.getElementById("game-over-sound");
+      const comboSound = document.getElementById("combo-sound");
+      const clickSound = document.getElementById("click-sound");
+
+      // Game state
+      let currentDifficulty = "easy";
+      let gameStarted = false;
+      let gameEnded = false;
+      let gamePaused = false;
+      let currentWord = "";
+      let score = 0;
+      let combo = 0;
+      let maxCombo = 0;
+      let wordsTyped = 0;
+      let correctWords = 0;
+      let timeLeft = 0;
+      let timerInterval = null;
+      let startTime = 0;
+      let wpm = 0;
+      let accuracy = 100;
+      let streak = 0;
+      let highScore = localStorage.getItem("typingHighScore")
+        ? parseInt(localStorage.getItem("typingHighScore"))
+        : 0;
+      let soundEnabled = true;
+
+      // Initialize the game
+      function init() {
+        highScoreElement.textContent = highScore;
+
+        // Set up tab switching
+        tabTriggers.forEach((tab) => {
+          tab.addEventListener("click", () => {
+            if (gameStarted) {
+              showToast(
+                "Please end the current game before changing difficulty.",
+                "info"
+              );
+              return;
+            }
+
+            const tabName = tab.dataset.tab;
+            setDifficulty(tabName);
+          });
+        });
+
+        // Set up event listeners
+        startButton.addEventListener("click", startGame);
+        endButton.addEventListener("click", endGame);
+        pauseButton.addEventListener("click", pauseGame);
+        resumeButton.addEventListener("click", resumeGame);
+        wordInput.addEventListener("input", handleInput);
+
+        // Theme toggle
+        themeToggle.addEventListener("click", toggleTheme);
+
+        // Home button
+        homeButton.addEventListener("click", goHome);
+
+        // Sound control
+        soundControl.addEventListener("click", toggleSound);
+
+        // Check if user prefers dark mode
+        if (
+          localStorage.getItem("theme") === "dark" ||
+          (window.matchMedia("(prefers-color-scheme: dark)").matches &&
+            !localStorage.getItem("theme"))
+        ) {
+          document.body.classList.add("dark");
+          updateThemeIcon(true);
+        } else {
+          updateThemeIcon(false);
+        }
+
+        // Check if sound is disabled
+        if (localStorage.getItem("soundDisabled") === "true") {
+          soundEnabled = false;
+          updateSoundIcon(false);
+        }
+      }
+
+      // Toggle sound
+      function toggleSound() {
+        soundEnabled = !soundEnabled;
+        localStorage.setItem("soundDisabled", !soundEnabled);
+        updateSoundIcon(soundEnabled);
+        playSound(clickSound);
+        showToast(`Sound ${soundEnabled ? "enabled" : "disabled"}`, "info");
+      }
+
+      // Update sound icon
+      function updateSoundIcon(isEnabled) {
+        if (isEnabled) {
+          soundControl.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+          </svg>
+        `;
+        } else {
+          soundControl.innerHTML = `
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+            <line x1="22" y1="9" x2="16" y2="15"></line>
+            <line x1="16" y1="9" x2="22" y2="15"></line>
+          </svg>
+        `;
+        }
+      }
+
+      // Go to the home/beginning state
+      function goHome() {
+        // If a game is in progress, end it first
+        if (gameStarted) {
+          endGame();
+        }
+
+        // Reset UI to initial state
+        gameArea.style.display = "none";
+        gameOver.style.display = "none";
+        introScreen.style.display = "block";
+        startButton.style.display = "inline-flex";
+        startButton.textContent = "Start Game";
+        startButton.innerHTML =
+          'Start Game <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+        pauseButton.style.display = "none";
+        endButton.style.display = "none";
+        timerContainer.style.display = "none";
+
+        // Enable tab changes
+        tabTriggers.forEach((tab) => {
+          tab.disabled = false;
+        });
+
+        playSound(clickSound);
+        showToast("Back to home screen", "info");
+      }
+
+      // Play sound if enabled
+      function playSound(audioElement) {
+        if (soundEnabled) {
+          audioElement.currentTime = 0;
+          audioElement
+            .play()
+            .catch((e) => console.error("Audio play error:", e));
+        }
+      }
+
+      // Pause the game
+      function pauseGame() {
+        if (!gameStarted || gameEnded || gamePaused) return;
+
+        gamePaused = true;
+
+        // Stop the timer
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+
+        // Show pause overlay
+        pauseOverlay.style.display = "flex";
+
+        // Update buttons
+        pauseButton.style.display = "none";
+
+        // Add animation
+        currentWordElement.classList.add("bounce");
+        setTimeout(() => {
+          currentWordElement.classList.remove("bounce");
+        }, 500);
+
+        playSound(clickSound);
+        showToast("Game paused", "info");
+      }
+
+      // Resume the game
+      function resumeGame() {
+        if (!gamePaused) return;
+
+        gamePaused = false;
+
+        // Hide pause overlay
+        pauseOverlay.style.display = "none";
+
+        // Restore buttons
+        pauseButton.style.display = "inline-flex";
+
+        // Restart the timer
+        startTimer();
+
+        // Focus on input
+        wordInput.focus();
+
+        playSound(clickSound);
+        showToast("Game resumed", "info");
+      }
+
+      // Toggle theme between light and dark mode
+      function toggleTheme() {
+        const isDarkMode = document.body.classList.contains("dark");
+        document.body.classList.toggle("dark");
+
+        // Save preference to localStorage
+        if (isDarkMode) {
+          localStorage.setItem("theme", "light");
+        } else {
+          localStorage.setItem("theme", "dark");
+        }
+
+        updateThemeIcon(!isDarkMode);
+        playSound(clickSound);
+      }
+
+      // Update theme icon based on current theme
+      function updateThemeIcon(isDarkMode) {
+        if (isDarkMode) {
+          themeIcon.innerHTML = `
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        `;
+        } else {
+          themeIcon.innerHTML = `
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+        `;
+        }
+      }
+
+      // Set difficulty level
+      function setDifficulty(difficulty) {
+        // Reset tab states
+        tabTriggers.forEach((tab) => {
+          tab.setAttribute("aria-selected", "false");
+        });
+
+        tabContents.forEach((content) => {
+          content.dataset.state = "inactive";
+          content.style.display = "none";
+        });
+
+        // Set active tab
+        document
+          .getElementById(`tab-${difficulty}`)
+          .setAttribute("aria-selected", "true");
+        const activeContent = document.querySelector(
+          `.tab-content[data-tab="${difficulty}"]`
+        );
+        activeContent.dataset.state = "active";
+        activeContent.style.display = "block";
+
+        currentDifficulty = difficulty;
+        playSound(clickSound);
+      }
+
+      // Start the game
+      function startGame() {
+        gameStarted = true;
+        gameEnded = false;
+        gamePaused = false;
+        score = 0;
+        combo = 0;
+        maxCombo = 0;
+        wordsTyped = 0;
+        correctWords = 0;
+        wpm = 0;
+        accuracy = 100;
+        streak = 0;
+        startTime = Date.now();
+
+        // Update UI
+        startButton.style.display = "none";
+        pauseButton.style.display = "inline-flex";
+        endButton.style.display = "inline-flex";
+        introScreen.style.display = "none";
+        gameArea.style.display = "block";
+        gameOver.style.display = "none";
+        timerContainer.style.display = "flex";
+        pauseOverlay.style.display = "none";
+
+        // Disable tab changes
+        tabTriggers.forEach((tab) => {
+          tab.disabled = true;
+        });
+
+        // Update stats display
+        updateStats();
+
+        // Get first word and start timer
+        getNewWord();
+
+        // Focus on input
+        wordInput.focus();
+
+        playSound(clickSound);
+        showToast("Game started! Type the words as fast as you can.", "info");
+      }
+
+      // Get a new word to type
+      function getNewWord() {
+        const words = difficultySettings[currentDifficulty].words;
+        const randomIndex = Math.floor(Math.random() * words.length);
+        currentWord = words[randomIndex];
+
+        // Display the word with character highlighting
+        renderCurrentWord();
+
+        // Reset input and timer
+        wordInput.value = "";
+        timeLeft = difficultySettings[currentDifficulty].timePerWord;
+
+        // Update UI
+        timeLeftElement.textContent = timeLeft.toFixed(1) + "s";
+        progressBar.style.width = "100%";
+        progressBar.className = "progress-indicator green";
+
+        // Start new timer
+        startTimer();
+      }
+
+      // Start the timer
+      function startTimer() {
+        // Clear previous timer if exists
+        if (timerInterval) {
+          clearInterval(timerInterval);
+        }
+
+        // Start new timer
+        timerInterval = setInterval(() => {
+          timeLeft -= 0.1;
+
+          // Update timer display and progress bar
+          timeLeftElement.textContent = Math.max(0, timeLeft).toFixed(1) + "s";
+          const progressPercent = Math.max(
+            (timeLeft / difficultySettings[currentDifficulty].timePerWord) *
+              100,
+            0
+          );
+          progressBar.style.width = progressPercent + "%";
+
+          // Update progress bar color
+          if (progressPercent < 30) {
+            progressBar.className = "progress-indicator red";
+          } else if (progressPercent < 60) {
+            progressBar.className = "progress-indicator orange";
+          } else {
+            progressBar.className = "progress-indicator green";
+          }
+
+          // Check if time is up
+          if (timeLeft <= 0) {
+            handleTimeout();
+          }
+        }, 100);
+      }
+
+      // Render current word with character highlighting
+      function renderCurrentWord() {
+        currentWordElement.innerHTML = "";
+
+        const userInput = wordInput ? wordInput.value : "";
+
+        for (let i = 0; i < currentWord.length; i++) {
+          const charSpan = document.createElement("span");
+          charSpan.textContent = currentWord[i];
+          charSpan.className = "character";
+
+          if (i < userInput.length) {
+            if (userInput[i].toLowerCase() === currentWord[i].toLowerCase()) {
+              charSpan.className += " character-correct";
+            } else {
+              charSpan.className += " character-incorrect";
+            }
+          }
+
+          currentWordElement.appendChild(charSpan);
+        }
+      }
+
+      // Handle input changes
+      function handleInput(e) {
+        if (gamePaused) return;
+
+        const userInput = e.target.value;
+
+        // Update the word display with highlighting
+        renderCurrentWord();
+
+        // Check if word is complete and correct
+        if (userInput.toLowerCase() === currentWord.toLowerCase()) {
+          // Calculate points and update stats
+          const earnedPoints = calculatePoints();
+          score += earnedPoints;
+          combo++;
+          maxCombo = Math.max(maxCombo, combo);
+          wordsTyped++;
+          correctWords++;
+          streak++;
+
+          // Add animation
+          currentWordElement.classList.add("bounce");
+          setTimeout(() => {
+            currentWordElement.classList.remove("bounce");
+          }, 500);
+
+          // Check for new high score
+          if (score > highScore) {
+            highScore = score;
+            localStorage.setItem("typingHighScore", highScore.toString());
+            highScoreElement.textContent = highScore;
+            showToast("New high score!", "success");
+          }
+
+          // Update stats display
+          updateStats();
+
+          // Show combo if greater than 1
+          if (combo > 1) {
+            comboDisplay.style.display = "flex";
+            comboCount.textContent = `x${combo}`;
+          } else {
+            comboDisplay.style.display = "none";
+          }
+
+          // Play sound effect
+          playSound(correctSound);
+
+          // Show streak messages
+          if (streak === 3) {
+            showToast("3 in a row! Keep going!", "success");
+            playSound(comboSound);
+          } else if (streak === 5) {
+            showToast("5 in a row! You're on fire!", "success");
+            playSound(comboSound);
+          } else if (streak === 10) {
+            showToast("10 in a row! Incredible!", "success");
+            playSound(comboSound);
+          } else if (combo > 0 && combo % 5 === 0) {
+            showToast(`Combo x${combo}!`, "success");
+            playSound(comboSound);
+          }
+
+          // Get a new word
+          getNewWord();
+        }
+      }
+
+      // Handle timeout (when time runs out for current word)
+      function handleTimeout() {
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+
+        // Reset combo
+        combo = 0;
+        comboDisplay.style.display = "none";
+
+        // Update stats
+        wordsTyped++;
+        updateStats();
+
+        // Reset streak
+        if (streak > 0) {
+          playSound(wrongSound);
+          showToast("Time's up! Combo lost.", "error");
+          streak = 0;
+        }
+
+        // Get a new word
+        getNewWord();
+      }
+
+      // Calculate points based on word length, time left, and combo
+      function calculatePoints() {
+        const basePoints = currentWord.length * 5;
+        const timeBonus = Math.round(timeLeft * 2);
+        const comboMultiplier = combo >= 10 ? 3 : combo >= 5 ? 2 : 1;
+
+        return (basePoints + timeBonus) * comboMultiplier;
+      }
+
+      // Update game statistics
+      function updateStats() {
+        scoreElement.textContent = score;
+
+        // Calculate WPM
+        if (correctWords > 0) {
+          const elapsedMinutes = (Date.now() - startTime) / 60000;
+          wpm = Math.round(correctWords / elapsedMinutes);
+          wpmElement.textContent = wpm;
+        }
+
+        // Calculate accuracy
+        if (wordsTyped > 0) {
+          accuracy = Math.round((correctWords / wordsTyped) * 100);
+          accuracyElement.textContent = accuracy + "%";
+        }
+
+        // Update words counter
+        wordsCountElement.textContent = correctWords + "/" + wordsTyped;
+      }
+
+      // End the game
+      function endGame() {
+        gameStarted = false;
+        gameEnded = true;
+        gamePaused = false;
+
+        // Clear timer
+        if (timerInterval) {
+          clearInterval(timerInterval);
+          timerInterval = null;
+        }
+
+        // Update UI
+        startButton.style.display = "inline-flex";
+        startButton.textContent = "Play Again";
+        startButton.innerHTML =
+          'Play Again <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>';
+
+        pauseButton.style.display = "none";
+        endButton.style.display = "none";
+        gameArea.style.display = "none";
+        gameOver.style.display = "block";
+        timerContainer.style.display = "none";
+        pauseOverlay.style.display = "none";
+
+        // Enable tab changes
+        tabTriggers.forEach((tab) => {
+          tab.disabled = false;
+        });
+
+        // Calculate final stats
+        const elapsedMinutes = (Date.now() - startTime) / 60000;
+        const finalWpm = Math.round(correctWords / elapsedMinutes || 0);
+        const finalAccuracy =
+          Math.round((correctWords / wordsTyped) * 100) || 0;
+
+        // Update game over screen
+        finalScoreElement.textContent = score;
+        finalWpmElement.textContent = finalWpm;
+        finalAccuracyElement.textContent = finalAccuracy + "%";
+        maxComboElement.textContent = maxCombo + "x";
+        correctWordsElement.textContent = correctWords;
+
+        // Show new high score if applicable
+        if (score >= highScore) {
+          newHighScoreElement.style.display = "flex";
+          newHighScoreValueElement.textContent = score;
+        } else {
+          newHighScoreElement.style.display = "none";
+        }
+
+        playSound(gameOverSound);
+        showToast("Game over!", "info");
+      }
+
+      // Show toast notification
+      function showToast(message, type = "info") {
+        const toastContainer = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast toast-${type}`;
+        toast.textContent = message;
+
+        toastContainer.appendChild(toast);
+
+        // Auto remove toast after 3 seconds
+        setTimeout(() => {
+          toast.style.animation = "slideOut 0.3s forwards";
+          setTimeout(() => {
+            toastContainer.removeChild(toast);
+          }, 300);
+        }, 3000);
+      }
+
+      // Add keyboard shortcut for pause/resume
+      document.addEventListener("keydown", (e) => {
+        // If Escape key is pressed and game is running
+        if (e.key === "Escape" && gameStarted && !gameEnded) {
+          if (gamePaused) {
+            resumeGame();
+          } else {
+            pauseGame();
+          }
+        }
+      });
+
+      // Initialize the game on load
+      window.addEventListener("load", init);
+    </script>
+  </body>
+</html>
